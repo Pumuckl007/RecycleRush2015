@@ -1,0 +1,10 @@
+package org.usfirst.frc.team2984.robot;
+
+import edu.wpi.first.wpilibj.CANTalon;
+
+public class MecanumDrive {
+	private CANTalon frontLeftMotor;
+	MecanumDrive(){
+		
+	}
+}
