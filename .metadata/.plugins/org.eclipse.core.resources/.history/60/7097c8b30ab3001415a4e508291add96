@@ -1,0 +1,20 @@
+package org.usfirst.frc.team2984.robot;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class MecanumDriveTest {
+
+	
+	@Test
+	public void driveWithFowardSpeedSetToOneMovesFowardAtSpeedOne() {
+		boolean test;
+		if(false){
+			test = true;
+		}
+		System.out.println(test);
+		fail("Not yet implemented");
+	}
+
+}

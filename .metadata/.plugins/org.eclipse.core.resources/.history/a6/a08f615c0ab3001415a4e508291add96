@@ -1,0 +1,38 @@
+package org.usfirst.frc.team2984.robot;
+
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.Timer;
+
+/**
+ * This is a demo program showing how to use Mecanum control with the RobotDrive class.
+ */
+public class Robot extends SampleRobot {
+	
+    MecanumDrive mecanumDrive;
+    Joystick stick;
+    
+    // The channel on the driver station that the joystick is connected to
+    final int joystickChannel	= 0;
+
+    public Robot() {
+        stick = new Joystick(joystickChannel);
+        mecanumDrive = new MecanumDrive(3,1,4,5);
+    }
+        
+
+    /**
+     * Runs the motors with Mecanum drive.
+     */
+    public void operatorControl() {
+    	stick.getBumper(null);
+        if(Math.abs(stick.getX())>0.05 || Math.abs(stick.getY()) > 0.05){
+        	mecanumDrive.drive(stick.getY(), stick.getX(), 0);
+        }
+    }
+    
+}

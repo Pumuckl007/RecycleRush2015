@@ -19,10 +19,6 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	RobotDrive myRobot;
-	private CANTalon talon2;
-	private CANTalon talon1;
-	private Jaguar jaguar;
 	Joystick stick;
 	int autoLoopCounter;
 
@@ -31,8 +27,6 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		talon2 = new CANTalon(2);
-		talon1 = new CANTalon(1);
 		stick = new Joystick(0);
 	}
 
@@ -47,7 +41,6 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during autonomous
 	 */
 	public void autonomousPeriodic() {
-		talon2.set(1);
 	}
 
 	/**
@@ -55,25 +48,14 @@ public class Robot extends IterativeRobot {
 	 * mode
 	 */
 	public void teleopInit() {
-//		camera.openCamera();
-//		camera.startCapture();
+		
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		if(Math.abs(stick.getX())>0.1){
-			talon2.set(stick.getX());
-			talon1.set(-stick.getX());
-		}
-		else {
-			talon2.set(0);
-			talon1.set(0);
-		}
-		
-		ByteBuffer buffer = null;
-		System.out.println(buffer);
+
 		
 	}
 

@@ -34,4 +34,6 @@
 			<item value="org.eclipse.team.ui"/>
 		</list>
 	</section>
+	<section name="ImportExportAction">
+	</section>
 </section>
