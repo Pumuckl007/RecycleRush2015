@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="MecanumDriveTest" project="Mecanum Drive" tests="8" started="8" failures="0" errors="0" ignored="0">
+  <testsuite name="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.109">
+    <testcase name="rotateRightAtFullSpeedRotatesAtFullSpeedRight" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.104"/>
+    <testcase name="driveWithFowardSpeedSetToOneMovesFowardAtSpeedOne" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.001"/>
+    <testcase name="rotateVectorOneOneByForthPIRotatesIt" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.001"/>
+    <testcase name="setCoastModeTrueChangesCoastModeToTrue" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.0"/>
+    <testcase name="rotateLeftAtFullSpeedRotatesAtFullSpeedLeft" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.001"/>
+    <testcase name="setCoastModeFalseChangesCoastModeToFalse" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.001"/>
+    <testcase name="driveWithFowardAndRightWithSpeedSetToOneMovesFowardAndRightAtSpeedOne" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.001"/>
+    <testcase name="rotateVectorOneOneByHalfPIRotatesIt" classname="org.usfirst.frc.team2984.robot.MecanumDriveTest" time="0.0"/>
+  </testsuite>
+</testrun>

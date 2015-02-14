@@ -1,0 +1,145 @@
+package org.usfirst.frc.team2984.robot;
+
+import java.util.HashMap;
+
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class MecanumDrive {
+	
+	//The motors
+	private CANTalon frontLeftMotor;
+	private CANTalon frontRightMotor;
+	private CANTalon backLeftMotor;
+	private CANTalon backRightMotor;
+	private HashMap<CANTalon, Integer> invertedMotors = new HashMap<CANTalon, Integer>();
+	private static final int NUMBER_OF_MOTORS = 4;
+	
+	MecanumDrive(int frontLeftCANId, int frontRightCANId, int backLeftCANId, int backRightCANId){
+		this(new CANTalon(frontLeftCANId), new CANTalon(backLeftCANId), new CANTalon(frontRightCANId), new CANTalon(backRightCANId));
+	}
+	
+	MecanumDrive(CANTalon frontLeftMotor, CANTalon frontRightMotor, CANTalon backLeftMotor, CANTalon backRightMotor){
+		this.frontLeftMotor = frontLeftMotor;
+		this.frontRightMotor = frontRightMotor;
+		this.backLeftMotor = backLeftMotor;
+		this.backRightMotor = backRightMotor;
+		invertedMotors.put(this.frontLeftMotor, 1);
+		invertedMotors.put(this.frontRightMotor, 1);
+		invertedMotors.put(this.backLeftMotor, 1);
+		invertedMotors.put(this.backRightMotor, 1);
+	}
+	
+	/**
+     *
+     * @param x The speed that the robot should drive in the X direction. [-1.0..1.0]
+     * @param y The speed that the robot should drive in the Y direction. [-1.0..1.0]
+     * @param rotation The rate of rotation for the robot that is completely independent of
+     * the translation. [-1.0..1.0]
+     * @param gyroAngle The current angle reading from the gyro.  Use this to implement field-oriented controls. In radians.
+     */
+	public void drive(double x, double y, double rotation, double gyroAngle) {
+        double xIn = x;
+        double yIn = y;
+        // Compenstate for gyro angle.
+        double rotated[] = rotateVector(xIn, yIn, gyroAngle);
+        xIn = rotated[0];
+        yIn = rotated[1];
+
+        double wheelSpeeds[] = new double[NUMBER_OF_MOTORS];
+        wheelSpeeds[0] = xIn + yIn + rotation;
+        wheelSpeeds[1] = -xIn + yIn - rotation;
+        wheelSpeeds[2] = -xIn + yIn + rotation;
+        wheelSpeeds[3] = xIn + yIn - rotation;
+
+        normalize(wheelSpeeds);
+        this.frontLeftMotor.set(wheelSpeeds[0] * invertedMotors.get(this.frontLeftMotor));
+        this.frontRightMotor.set(wheelSpeeds[1] * invertedMotors.get(this.frontRightMotor));
+        this.backLeftMotor.set(wheelSpeeds[2] * invertedMotors.get(this.backLeftMotor));
+        this.backRightMotor.set(wheelSpeeds[3] * invertedMotors.get(this.backRightMotor));
+    }
+	
+	/**
+	 * sets the break mode to either coast(True) or break(False)
+	 * @param coast
+	 */
+	public void setCoastMode(boolean coast){
+		this.frontLeftMotor.enableBrakeMode(coast);
+		this.frontRightMotor.enableBrakeMode(coast);
+		this.backLeftMotor.enableBrakeMode(coast);
+		this.backRightMotor.enableBrakeMode(coast);
+	}
+	
+	/**
+	 * sets the Ramp rate of the talons in amps per second. Anything lower that 1 will cancel the ramp
+	 * @param rate
+	 */
+	public void setVoltageRamp(double rate){
+		this.frontLeftMotor.setVoltageRampRate(rate);
+		this.frontRightMotor.setVoltageRampRate(rate);
+		this.backLeftMotor.setVoltageRampRate(rate);
+		this.backRightMotor.setVoltageRampRate(rate);
+	}
+	
+	/**
+	 * 
+	 */
+	public void setSafeMode(boolean enabled, double rampRateUp, double rampRateDown){
+		this.frontLeftMotor.set(rampRateUp);
+		this.frontRightMotor.set(rampRateUp);
+		this.backLeftMotor.set(rampRateUp);
+		this.backRightMotor.set(rampRateUp);
+	}
+	
+	/**
+	 * Logs debug values to the dashboard
+	 */
+	public void update(){
+		this.setValues(this.frontLeftMotor, "Front Left Motor");
+		this.setValues(this.frontRightMotor, "Front Right Motor");
+		this.setValues(this.backLeftMotor, "Back Left Motor");
+		this.setValues(this.backRightMotor, "Back Right Motor");
+	}
+	
+	/**
+	 * sets Debug values of a talon
+	 * @param talon talon to use for debug
+	 * @param nameOfTalon an identifyer for the talon that will show up on the smart dashboard
+	 */
+	private void setValues(CANTalon talon, String nameOfTalon){
+		SmartDashboard.putNumber(nameOfTalon + " Bus Voltage", talon.getBusVoltage());
+		SmartDashboard.putNumber(nameOfTalon + " Close Loop Ramp Rate", talon.getCloseLoopRampRate());
+		SmartDashboard.putNumber(nameOfTalon + " Output Current", talon.getOutputCurrent());
+		SmartDashboard.putNumber(nameOfTalon + " Output Voltage", talon.getOutputVoltage());
+		SmartDashboard.putNumber(nameOfTalon + " Temp", talon.getTemp());
+	}
+	
+	/**
+     * Normalize all wheel speeds if the magnitude of any wheel is greater than 1.0.
+     */
+    protected static void normalize(double wheelSpeeds[]) {
+        double maxMagnitude = Math.abs(wheelSpeeds[0]);
+        int i;
+        for (i=1; i<NUMBER_OF_MOTORS; i++) {
+            double asbsoluteWheelSpeed = Math.abs(wheelSpeeds[i]);
+            if (maxMagnitude < asbsoluteWheelSpeed) maxMagnitude = asbsoluteWheelSpeed;
+        }
+        if (maxMagnitude > 1.0) {
+            for (i=0; i<NUMBER_OF_MOTORS; i++) {
+                wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
+            }
+        }
+    }
+
+    /**
+     * Rotate a vector in Cartesian space.
+     */
+    protected static double[] rotateVector(double x, double y, double angle) {
+        double cosA = Math.cos(angle * (Math.PI / 180.0));
+        double sinA = Math.sin(angle * (Math.PI / 180.0));
+        double out[] = new double[2];
+        out[0] = x * cosA - y * sinA;
+        out[1] = x * sinA + y * cosA;
+        return out;
+    }
+}

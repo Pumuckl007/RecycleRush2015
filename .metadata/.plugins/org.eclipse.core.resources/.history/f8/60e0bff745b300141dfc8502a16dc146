@@ -1,0 +1,57 @@
+package org.usfirst.frc.team2984.robot;
+
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class MecanumDrive extends RobotDrive {
+	
+	//The motors
+	private CANTalon frontLeftMotor;
+	private CANTalon frontRightMotor;
+	private CANTalon backLeftMotor;
+	private CANTalon backRightMotor;
+	
+	MecanumDrive(int frontLeftCANId, int frontRightCANId, int backLeftCANId, int backRightCANId){
+		super(new CANTalon(frontLeftCANId), new CANTalon(backLeftCANId), new CANTalon(frontRightCANId), new CANTalon(backRightCANId));
+		this.frontLeftMotor = (CANTalon) this.m_frontLeftMotor;
+		this.frontRightMotor = (CANTalon) this.m_frontRightMotor;
+		this.backLeftMotor = (CANTalon) this.m_rearLeftMotor;
+		this.backRightMotor = (CANTalon) this.m_rearRightMotor;
+	}
+	
+	/**
+	 * sets the break mode to either coast(True) or break(False)
+	 * @param coast
+	 */
+	public void coast(boolean coast){
+		this.frontLeftMotor.enableBrakeMode(coast);
+		this.frontRightMotor.enableBrakeMode(coast);
+		this.backLeftMotor.enableBrakeMode(coast);
+		this.backRightMotor.enableBrakeMode(coast);
+	}
+	
+	/**
+	 * sets the Ramp rate of the talons in amps per second. Anything lower that 1 will cancel the ramp
+	 * @param rate
+	 */
+	public void setVoltageRamp(double rate){
+		this.frontLeftMotor.setVoltageRampRate(rate);
+		this.frontRightMotor.setVoltageRampRate(rate);
+		this.backLeftMotor.setVoltageRampRate(rate);
+		this.backRightMotor.setVoltageRampRate(rate);
+	}
+	public void update(){
+		this.setValues(this.frontLeftMotor, "Front Left Motor");
+		this.setValues(this.frontRightMotor, "Front Right Motor");
+		this.setValues(this.backLeftMotor, "Back Left Motor");
+		this.setValues(this.backRightMotor, "Back Right Motor");
+	}
+	private void setValues(CANTalon talon, String nameOfTalon){
+		SmartDashboard.putNumber(nameOfTalon + " Bus Voltage", talon.getBusVoltage());
+		SmartDashboard.putNumber(nameOfTalon + " Close Loop Ramp Rate", talon.getCloseLoopRampRate());
+		SmartDashboard.putNumber(nameOfTalon + " Output Current", talon.getOutputCurrent());
+		SmartDashboard.putNumber(nameOfTalon + " Output Voltage", talon.getOutputVoltage());
+		SmartDashboard.putNumber(nameOfTalon + " Temp", talon.getTemp());
+	}
+}

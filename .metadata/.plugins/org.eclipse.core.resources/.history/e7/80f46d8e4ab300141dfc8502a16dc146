@@ -1,0 +1,32 @@
+package org.usfirst.frc.team2984.robot;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import edu.wpi.first.wpilibj.CANTalon;
+
+import org.mockito.*;
+
+public class MecanumDriveTest {
+	
+	CANTalon frontLeft;
+	CANTalon frontRight;
+	CANTalon backLeft;
+	CANTalon backRight;
+	
+	@Before
+	public void before(){
+		frontLeft = Mockito.mock(CANTalon.class);
+		frontRight = Mockito.mock(CANTalon.class);
+		backLeft = Mockito.mock(CANTalon.class);
+		backRight = Mockito.mock(CANTalon.class);
+	}
+	
+	@Test
+	public void driveWithFowardSpeedSetToOneMovesFowardAtSpeedOne() {
+		
+	}
+
+}

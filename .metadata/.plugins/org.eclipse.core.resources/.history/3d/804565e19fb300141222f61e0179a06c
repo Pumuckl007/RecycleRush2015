@@ -1,0 +1,69 @@
+package org.usfirst.frc.team2984.robot;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import edu.wpi.first.wpilibj.CANTalon;
+
+public class MecanumDriveTest {
+	
+	CANTalon frontLeft;
+	CANTalon frontRight;
+	CANTalon backLeft;
+	CANTalon backRight;
+	MecanumDrive drive;
+	
+	@Before
+	public void before(){
+		frontLeft = Mockito.mock(CANTalon.class);
+		frontRight = Mockito.mock(CANTalon.class);
+		backLeft = Mockito.mock(CANTalon.class);
+		backRight = Mockito.mock(CANTalon.class);
+		drive = new MecanumDrive(frontLeft,frontRight,backLeft,backRight);
+	}
+	
+	@Test
+	public void driveWithFowardSpeedSetToOneMovesFowardAtSpeedOne() {
+		drive.drive(0, 1, 0, 0);
+		Mockito.verify(frontLeft).set(1.0);
+		Mockito.verify(frontRight).set(1.0);
+		Mockito.verify(backLeft).set(1.0);
+		Mockito.verify(backRight).set(1.0);
+	}
+	
+	@Test
+	public void driveWithFowardAndRightWithSpeedSetToOneMovesFowardAndRightAtSpeedOne() {
+		drive.drive(1, 1, 0, 0);
+		Mockito.verify(frontLeft).set(1.0);
+		Mockito.verify(frontRight).set(0.0);
+		Mockito.verify(backLeft).set(0.0);
+		Mockito.verify(backRight).set(1.0);
+	}
+	
+	@Test
+	public void rotateLeftAtFullSpeedRotatesAtFullSpeedLeft() {
+		drive.drive(0, 0, 1, 0);
+		Mockito.verify(frontLeft).set(1.0);
+		Mockito.verify(frontRight).set(-1.0);
+		Mockito.verify(backLeft).set(1.0);
+		Mockito.verify(backRight).set(-1.0);
+	}
+	
+	@Test
+	public void rotateRightAtFullSpeedRotatesAtFullSpeedRight() {
+		drive.drive(0, 0, -1, 0);
+		Mockito.verify(frontLeft).set(-1.0);
+		Mockito.verify(frontRight).set(1.0);
+		Mockito.verify(backLeft).set(-1.0);
+		Mockito.verify(backRight).set(1.0);
+	}
+	
+	@SuppressWarnings("static-access")
+	@Test
+	public void rotateVectorOneOneByHalfPIRotatesIt(){
+		double[] values = new double[]{1,-1};
+		assert(drive.rotateVector(1, 1, Math.PI/2)).equals(values);
+	}
+
+}
