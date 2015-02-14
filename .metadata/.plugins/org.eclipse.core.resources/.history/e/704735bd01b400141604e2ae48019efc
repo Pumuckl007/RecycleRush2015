@@ -98,10 +98,7 @@ public class MecanumDrive {
 	}
 	
 	/**
-	 * Sets the acceleration mode of the talons
-	 * @param enabled enable or disable safeMode
-	 * @param rampRateUp the rate in amps per second from [1,Infinity] that the talon ramps up. -1 will cause there to be no ramp
-	 * @param rampRateDown the rate in amps per second from [1,Infinity] that the talon ramps down. -1 will cause there to be no ramp
+	 * 
 	 */
 	public void setSafeMode(boolean enabled, double rampRateUp, double rampRateDown){
 		if(enabled){
