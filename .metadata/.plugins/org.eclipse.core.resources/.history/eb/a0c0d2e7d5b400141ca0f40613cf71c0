@@ -1,0 +1,57 @@
+package main;
+
+import java.awt.BorderLayout;
+import java.util.HashMap;
+
+import javax.swing.JFrame;
+import javax.swing.JTextPane;
+
+public class OutputWriter {
+	public HashMap<String, Double> numbers = new HashMap<String, Double>();
+	public HashMap<String, Boolean> booleans = new HashMap<String, Boolean>();
+	private JTextPane text;
+	private static HashMap<String,OutputWriter> instanses = new HashMap<String,OutputWriter>();
+	OutputWriter(){
+		JFrame frame = new JFrame("FrameDemo");
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		text = new JTextPane();
+		text.setText("Starting...\nStarting...\nStarting...\nStarting...\nStarting...\nStarting...\nStarting...\nStarting...\nStarting...\n");
+		frame.getContentPane().add(text, BorderLayout.CENTER);
+
+		frame.pack();
+
+		frame.setVisible(true);
+		(new WindowUpdater()).start();
+	}
+	public void putNumber(String key, double value){
+		numbers.put(key, value);
+	}
+	public void putBoolean(String key, boolean value){
+		booleans.put(key, value);
+	}
+	public double getNumber(String key){
+		return numbers.get(key);
+	}
+	public boolean getBoolean(String key){
+		return booleans.get(key);
+	}
+	public static void setClientMode(){
+	}
+	public static void setTeam(int number){
+		System.out.println(number);
+	}
+	public static OutputWriter getTable(String name){
+		System.out.println(name);
+		OutputWriter writer = new OutputWriter();
+		instanses.put(name, writer);
+		return writer;
+	}
+	public static OutputWriter getWriter(String name){
+		return instanses.get(name);
+	}
+	public JTextPane getText(){
+		return this.text;
+	}
+}

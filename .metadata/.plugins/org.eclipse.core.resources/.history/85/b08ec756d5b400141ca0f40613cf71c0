@@ -1,0 +1,24 @@
+package main;
+
+import javax.swing.JTextPane;
+
+public class WindowUpdater extends Thread {
+	
+	private JTextPane text;
+	private OutputWriter writer;
+	
+	public void run(){
+		this.writer = OutputWriter.getWriter("CustomData1");
+		this.text = writer.getText();
+		while(true){
+			String textInText = "";
+			for(String id : this.writer.numbers.keySet()){
+				textInText = textInText + id + this.writer.getNumber(id) + "\n";
+			}
+			for(String id : this.writer.booleans.keySet()){
+				textInText = textInText + id + this.writer.getNumber(id) + "\n";
+			}
+		}
+	}
+	
+}

@@ -1,0 +1,32 @@
+package main;
+
+import javax.swing.JTextPane;
+
+public class WindowUpdater extends Thread {
+	
+	private JTextPane text;
+	private OutputWriter writer;
+	private int sleep = 0;
+	
+	public void run(){
+		this.writer = OutputWriter.getWriter("CustomData1");
+		this.text = writer.getText();
+		System.out.println("Starting Window Thread");
+		while(true){
+			String textInText = "";
+			for(String id : this.writer.numbers.keySet()){
+				textInText = textInText + id + " : "  + this.writer.getNumber(id) + "\n";
+			}
+			for(String id : this.writer.booleans.keySet()){
+				textInText = textInText + id + " : " + this.writer.getBoolean(id) + "\n";
+			}
+			text.setText(textInText);
+		}
+		if(sleep > 30){
+			Thread.sleep(1L);
+			sleep = 0;
+		}
+		sleep ++;
+	}
+	
+}

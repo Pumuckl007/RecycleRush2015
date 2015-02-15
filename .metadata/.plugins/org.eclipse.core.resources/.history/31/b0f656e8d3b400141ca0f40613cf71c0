@@ -1,0 +1,15 @@
+package main;
+
+import javax.swing.JTextPane;
+
+public class WindowUpdater extends Thread {
+	
+	public void run(){
+		System.out.println("Hello from a thread!");
+	}
+	
+	public void start(JTextPane text, OutputWriter writer){
+		this.start();
+	}
+
+}

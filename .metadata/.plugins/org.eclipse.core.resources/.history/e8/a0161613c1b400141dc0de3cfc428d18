@@ -1,0 +1,10 @@
+package main;
+
+public class OutputWriter {
+	OutputWriter(){
+		
+	}
+	public void putNumber(String key, double value){
+		System.out.println(key + " : " + value);
+	}
+}

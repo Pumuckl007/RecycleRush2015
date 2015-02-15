@@ -1,0 +1,20 @@
+package main;
+
+import javax.swing.JTextPane;
+
+public class WindowUpdater extends Thread {
+	
+	private JTextPane text;
+	private OutputWriter writer;
+	
+	public void run(){
+		System.out.println("Hello from a thread!" + this.writer.getNumber("axis1"));
+	}
+	
+	public void start(JTextPane text, OutputWriter writer){
+		this.start();
+		this.text = text;
+		this.writer = writer;
+	}
+
+}

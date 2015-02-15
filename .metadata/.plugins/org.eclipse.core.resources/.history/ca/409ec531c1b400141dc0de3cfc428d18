@@ -1,0 +1,13 @@
+package main;
+
+public class OutputWriter {
+	OutputWriter(){
+		
+	}
+	public void putNumber(String key, double value){
+		System.out.println(key + " : " + value);
+	}
+	public void putBoolean(String key, boolean value){
+		System.out.println(key + " : " + value);
+	}
+}

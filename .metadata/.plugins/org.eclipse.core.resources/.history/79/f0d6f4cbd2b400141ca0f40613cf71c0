@@ -1,0 +1,52 @@
+package main;
+
+import java.awt.BorderLayout;
+import java.util.HashMap;
+
+import javax.swing.JFrame;
+
+public class OutputWriter {
+	private HashMap<String, Double> numbers = new HashMap<String, Double>();
+	private HashMap<String, Boolean> booleans = new HashMap<String, Boolean>();
+	OutputWriter(){
+		//1. Create the frame.
+		JFrame frame = new JFrame("FrameDemo");
+
+		//2. Optional: What happens when the frame closes?
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//3. Create components and put them in the frame.
+		//...create emptyLabel...
+		frame.getContentPane().add("Woo", BorderLayout.CENTER);
+
+		//4. Size the frame.
+		frame.pack();
+
+		//5. Show it.
+		frame.setVisible(true);
+	}
+	public void putNumber(String key, double value){
+		System.out.println(key + " : " + value);
+		numbers.put(key, value);
+	}
+	public void putBoolean(String key, boolean value){
+		System.out.println(key + " : " + value);
+		booleans.put(key, value);
+	}
+	public double getNumber(String key){
+		return numbers.get(key);
+	}
+	public boolean getBoolean(String key){
+		return booleans.get(key);
+	}
+	public static void setClientMode(){
+		System.out.println("This is now client mode");
+	}
+	public static void setTeam(int number){
+		System.out.println(number);
+	}
+	public static OutputWriter getTable(String name){
+		System.out.println(name);
+		return new OutputWriter();
+	}
+}
