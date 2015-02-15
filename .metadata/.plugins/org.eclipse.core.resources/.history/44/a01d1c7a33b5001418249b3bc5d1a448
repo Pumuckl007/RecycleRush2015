@@ -119,8 +119,8 @@ public class ArduinoReader implements SerialPortEventListener {
 
 				switch (Integer.parseInt(inputs[0])) {
 				case 0:
-					table.putNumber("axis1", (Math.round(this.interpretYAxis(-Integer.parseInt(inputs[1]))*100))/100D);
-					table.putNumber("axis2", (Math.round(this.interpretXAxis(-Integer.parseInt(inputs[2]))*100))/100D);
+					table.putNumber("axis1", (Math.round((this.interpretYAxis(-Integer.parseInt(inputs[1])))*1000))/1000);
+					table.putNumber("axis2", -Integer.parseInt(inputs[2]));
 					interpretDigitalKnobData(inputs[3], inputs[4], inputs[5],
 							inputs[6]);
 					table.putBoolean("feederArm", inputs[7].equals("1"));
@@ -145,23 +145,10 @@ public class ArduinoReader implements SerialPortEventListener {
 	}
 
 	private double interpretYAxis(double axis){
-		if(Math.abs(axis)<5){
-			return 0;
-		}
 		if(axis > 0){
 			return axis/284;
 		}
 		return axis/235;
-	}
-	
-	private double interpretXAxis(double axis){
-		if(Math.abs(axis)<5){
-			return 0;
-		}
-		if(axis > 0){
-			return axis/293;
-		}
-		return axis/267;
 	}
 	
 	private void interpretDigitalKnobData(String val1, String val2,

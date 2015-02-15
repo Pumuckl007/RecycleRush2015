@@ -145,23 +145,10 @@ public class ArduinoReader implements SerialPortEventListener {
 	}
 
 	private double interpretYAxis(double axis){
-		if(Math.abs(axis)<5){
-			return 0;
-		}
 		if(axis > 0){
 			return axis/284;
 		}
 		return axis/235;
-	}
-	
-	private double interpretXAxis(double axis){
-		if(Math.abs(axis)<5){
-			return 0;
-		}
-		if(axis > 0){
-			return axis/293;
-		}
-		return axis/267;
 	}
 	
 	private void interpretDigitalKnobData(String val1, String val2,

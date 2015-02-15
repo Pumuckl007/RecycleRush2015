@@ -145,9 +145,6 @@ public class ArduinoReader implements SerialPortEventListener {
 	}
 
 	private double interpretYAxis(double axis){
-		if(Math.abs(axis)<5){
-			return 0;
-		}
 		if(axis > 0){
 			return axis/284;
 		}
@@ -155,9 +152,6 @@ public class ArduinoReader implements SerialPortEventListener {
 	}
 	
 	private double interpretXAxis(double axis){
-		if(Math.abs(axis)<5){
-			return 0;
-		}
 		if(axis > 0){
 			return axis/293;
 		}
