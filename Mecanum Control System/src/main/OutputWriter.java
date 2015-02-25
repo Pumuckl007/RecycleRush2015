@@ -1,31 +1,16 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.util.HashMap;
 
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class OutputWriter {
 	public HashMap<String, Double> numbers = new HashMap<String, Double>();
 	public HashMap<String, Boolean> booleans = new HashMap<String, Boolean>();
-	private JTextPane text;
 	private static HashMap<String,OutputWriter> instanses = new HashMap<String,OutputWriter>();
-	OutputWriter(){
-		JFrame frame = new JFrame("Team 2984 Custom Controler Reader");
-
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		text = new JTextPane();
-		text.setEditable(false);
-		text.setFont(new Font("Arial", 0, 40));
-		frame.getContentPane().add(text, BorderLayout.CENTER);
-
-		frame.setSize(400, 550);
-
-		frame.setVisible(true);
-		(new WindowUpdater()).start();
+	private NetworkTable tabel;
+	OutputWriter(NetworkTable tabel){
+		this.tabel = tabel;
 	}
 	public void putNumber(String key, double value){
 		numbers.put(key, value);
@@ -40,20 +25,21 @@ public class OutputWriter {
 		return booleans.get(key);
 	}
 	public static void setClientMode(){
+		NetworkTable.setClientMode();
 	}
 	public static void setTeam(int number){
-		System.out.println(number);
+		NetworkTable.setTeam(number);
 	}
 	public static OutputWriter getTable(String name){
-		System.out.println(name);
-		OutputWriter writer = new OutputWriter();
+		System.out.println("Made " + name);
+		OutputWriter writer = new OutputWriter(null);
 		instanses.put(name, writer);
 		return writer;
 	}
 	public static OutputWriter getWriter(String name){
 		return instanses.get(name);
 	}
-	public JTextPane getText(){
-		return this.text;
+	public static boolean hasInitilized(String name){
+		return instanses.containsKey(name);
 	}
 }

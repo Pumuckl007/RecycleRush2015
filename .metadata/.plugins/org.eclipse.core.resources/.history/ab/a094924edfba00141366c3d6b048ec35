@@ -1,0 +1,26 @@
+package main;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+
+import javax.swing.JComponent;
+
+public class ConnetionIndicator extends JComponent{
+
+	private static final long serialVersionUID = -5385133776832672049L;
+	private int red = 0;
+	private int green = 255;
+	private int blue = 0;
+	public void paint(Graphics g) {
+		super.paint(g);
+		Graphics2D g2 = (Graphics2D) g;
+		Paint colorPaint = new Color(red,green,blue);
+		g2.setPaint(colorPaint);
+		g2.fillOval(10, 2, this.getHeight()-4, this.getHeight()-4);
+		g2.drawOval(10, 2, this.getHeight()-4, this.getHeight()-4);
+		System.out.println("Painted");
+	}
+	
+}

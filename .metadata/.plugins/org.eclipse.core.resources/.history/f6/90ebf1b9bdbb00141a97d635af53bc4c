@@ -1,0 +1,23 @@
+package main;
+
+
+public class ConnectionSetter extends Thread{
+	private ConnectionIndicator indicator;
+	private OutputWriter writer;
+	public void setIndicator(ConnectionIndicator indicator){
+		this.indicator = indicator;
+	}
+	public void run(){
+		super.run();
+		this.writer = OutputWriter.getWriter("CustomData1");
+		while(true){
+			indicator.setConnected(!indicator.isConnected());
+			
+			try {
+				Thread.sleep(200L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

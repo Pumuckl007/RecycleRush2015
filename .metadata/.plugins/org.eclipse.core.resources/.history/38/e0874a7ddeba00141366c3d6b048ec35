@@ -1,0 +1,23 @@
+package main;
+
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JComponent;
+
+public class ConnetionIndicator extends JComponent{
+
+	private static final long serialVersionUID = -5385133776832672049L;
+	public void paint(Graphics g) {
+		super.paint(g);
+		Graphics2D g2 = (Graphics2D) g;
+		GradientPaint paint = new GradientPaint(0, 0, new Color(225,225,225),
+				this.getWidth()/2, 0, new Color(250,250,250), true);
+		g2.setPaint(paint);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		System.out.println("Painted");
+	}
+	
+}

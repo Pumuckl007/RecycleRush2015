@@ -1,0 +1,25 @@
+package main;
+
+
+public class ConnectionSetter extends Thread{
+	@SuppressWarnings("unused")
+	private ConnectionIndicator indicator;
+	private OutputWriter writer;
+	public void setIndicator(ConnectionIndicator indicator){
+		this.indicator = indicator;
+	}
+	public void run(){
+		super.run();
+		this.writer = OutputWriter.getWriter("CustomData1");
+		while(true){
+			if(this.writer.getNumber("Pull In Tote")>0){
+				this.writer.putNumber("Pull In Tote", ((int)(this.writer.getNumber("Pull In Tote")*10000)-5)/10000D);
+			}
+			try {
+				Thread.sleep(500L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

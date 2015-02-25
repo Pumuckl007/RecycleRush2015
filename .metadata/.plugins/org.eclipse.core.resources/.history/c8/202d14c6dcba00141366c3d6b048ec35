@@ -1,0 +1,7 @@
+package main;
+
+import javax.swing.JComponent;
+
+public class ConnetionIndicator extends JComponent{
+
+}

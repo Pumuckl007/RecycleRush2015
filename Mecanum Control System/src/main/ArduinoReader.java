@@ -53,7 +53,7 @@ public class ArduinoReader implements SerialPortEventListener {
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
 
-	public void initialize() {
+	public boolean initialize() {
 		CommPortIdentifier portId = null;
 		Enumeration<?> portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -71,7 +71,7 @@ public class ArduinoReader implements SerialPortEventListener {
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
 			WindowUpdater.exeption = "Could not find COM port. If on Linux create a sim link between /dev/ttyACM0 and /dev/ttyS81 and give read accsess (chmod 666) to /dev/ttyACM0";
-			return;
+			return false;
 		}
 
 		try {
@@ -94,6 +94,7 @@ public class ArduinoReader implements SerialPortEventListener {
 		} catch (Exception e) {
 			System.err.println(e.toString());
 		}
+		return true;
 	}
 
 	/**
@@ -173,6 +174,14 @@ public class ArduinoReader implements SerialPortEventListener {
 
 	}
 
+	public void run(){
+		try {
+			ArduinoReader.main(new String[1]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("Starting...");
@@ -193,86 +202,87 @@ public class ArduinoReader implements SerialPortEventListener {
 		table.putNumber("time", 0);
 
 		final ArduinoReader main = new ArduinoReader();
-		main.initialize();
-
-		reset(main);
-
-		System.out.println("Started");
-
-		new Thread() {
-
-			public void run() {
-
-				while (true) {
-
-					try {
-
-						while (isLoading) {
-							setLoadingLight(main, !loadingStatusLightState);
-							Thread.sleep(500);
+		boolean didNotFail = main.initialize();
+		if(didNotFail){
+			reset(main);
+	
+			System.out.println("Started");
+	
+			new Thread() {
+	
+				public void run() {
+	
+					while (true) {
+	
+						try {
+	
+							while (isLoading) {
+								setLoadingLight(main, !loadingStatusLightState);
+								Thread.sleep(500);
+							}
+	
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
-
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
+					}
+	
+				}
+	
+			}.start();
+	
+			new Thread() {
+	
+				public void run() {
+	
+					while (true) {
+						try {
+							sendUpdate(main);
+							Thread.sleep(2000);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
-
-			}
-
-		}.start();
-
-		new Thread() {
-
-			public void run() {
-
-				while (true) {
-					try {
-						sendUpdate(main);
-						Thread.sleep(2000);
-					} catch (Exception e) {
-						e.printStackTrace();
+	
+			}.start();
+	
+			double lastTime = table.getNumber("time"), lastChange = System
+					.currentTimeMillis();
+	
+			while (System.in.available() < 1) {
+	
+				try {
+	
+					if (lastTime != table.getNumber("time")) {
+						lastTime = table.getNumber("time");
+						lastChange = System.currentTimeMillis();
+	
+						setErrorLight(main, false);
+						setConnectedLight(main, true);
+	
+					} else if (lastChange + 2000 < System.currentTimeMillis()) {
+						setErrorLight(main, true);
+						setConnectedLight(main, false);
 					}
+	
+					isLoading = table.getBoolean("loading");
+	
+					if (!isLoading)
+						setLoadingLight(main, table.getBoolean("loaded"));
+	
+					//sendUpdate(main);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
-
-		}.start();
-
-		double lastTime = table.getNumber("time"), lastChange = System
-				.currentTimeMillis();
-
-		while (System.in.available() < 1) {
-
-			try {
-
-				if (lastTime != table.getNumber("time")) {
-					lastTime = table.getNumber("time");
-					lastChange = System.currentTimeMillis();
-
-					setErrorLight(main, false);
-					setConnectedLight(main, true);
-
-				} else if (lastChange + 2000 < System.currentTimeMillis()) {
-					setErrorLight(main, true);
-					setConnectedLight(main, false);
-				}
-
-				isLoading = table.getBoolean("loading");
-
-				if (!isLoading)
-					setLoadingLight(main, table.getBoolean("loaded"));
-
-				//sendUpdate(main);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	
+			main.close();
+	
+			System.exit(0);
 		}
-
-		main.close();
-
-		System.exit(0);
 	}
 
 	private static void setLoadingLight(ArduinoReader main, boolean state)

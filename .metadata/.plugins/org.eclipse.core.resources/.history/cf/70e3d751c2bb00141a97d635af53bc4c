@@ -1,0 +1,35 @@
+package main;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+
+import javax.swing.JButton;
+
+public class GradientButton extends JButton{
+	private static final long serialVersionUID = 6069677968953768389L;
+	private Paint paint;
+    private GradientButton(Paint paint){
+        super();
+        setContentAreaFilled(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g){
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(this.paint);
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
+
+        super.paintComponent(g);
+    }
+    
+    public void setGradient(Paint paint){
+    	this.paint = paint;
+    	this.repaint();
+    }
+
+    public static final GradientButton newInstance(Paint paint){
+        return new GradientButton(paint);
+    }
+}

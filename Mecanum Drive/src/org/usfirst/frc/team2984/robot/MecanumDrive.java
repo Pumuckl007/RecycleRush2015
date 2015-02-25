@@ -57,8 +57,8 @@ public class MecanumDrive {
 
         double wheelSpeeds[] = new double[NUMBER_OF_MOTORS];
         wheelSpeeds[0] = xIn + yIn + rotation;
-        wheelSpeeds[1] = -xIn + yIn - rotation;
-        wheelSpeeds[2] = -xIn + yIn + rotation;
+        wheelSpeeds[1] = -xIn + yIn + rotation;
+        wheelSpeeds[2] = -xIn + yIn - rotation;
         wheelSpeeds[3] = xIn + yIn - rotation;
 
         normalize(wheelSpeeds);
