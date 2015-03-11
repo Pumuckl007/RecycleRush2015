@@ -1,9 +1,0 @@
-package main;
-
-import javax.swing.JComponent;
-
-public class ConnetionIndicator extends JComponent{
-
-	private static final long serialVersionUID = -5385133776832672049L;
-
-}
